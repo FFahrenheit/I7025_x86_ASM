@@ -50,7 +50,7 @@ write:
     MOV BX, handle              ;Cargamos en handle en BX
     MOV AH, 0x3E                ;para cerrar el archivo                            
     INT 0x21                    ;y lo cerramos                          
-    
+    JC error 
     
     ;Abrir archivo para su lectura 
     MOV AL, 0x00                ;Solo lectura
@@ -69,6 +69,7 @@ read:
     MOV AH, 0x3F                ;Opcion leer
     
     INT 0x21                    ;Ejecutamos la instruccion de lectura
+    JC error
     
     CMP AX, 0x00                ;Observamos si no llegamos al EOF
     JZ ending                                                    
@@ -85,6 +86,7 @@ ending:
     MOV BX, handle              ;Cargamos en handle en BX
     MOV AH, 0x3E                ;para cerrar el archivo                            
     INT 0x21                    ;y lo cerramos  
+    JC error
     MOV AL, cont
     
                        
