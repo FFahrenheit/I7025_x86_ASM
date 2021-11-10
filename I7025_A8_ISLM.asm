@@ -3,7 +3,8 @@
     X DW ?
     Y DW ?
     final DW ?
-    size DW 0x000A
+    W DW 0x000A
+    H DW 0x0005
 
 begin: 
     MOV AH, 00H
@@ -57,7 +58,7 @@ parte1:
     
     INC CX
     INC SI
-    CMP SI, size
+    CMP SI, W
     JNZ parte1
 
 ;Parte 2        
@@ -71,14 +72,14 @@ parte2:
     
     INC DX
     INC SI
-    CMP SI, size
+    CMP SI, H
     JNZ parte2   
     
 ;Parte 3    
     MOV SI, 0
     MOV AL, 0AH
     MOV CX, X
-    ADD CX, size
+    ADD CX, W
     DEC CX
     MOV DX, Y
 parte3:
@@ -86,8 +87,8 @@ parte3:
     INT 10H
     
     INC DX
-    INC SI
-    CMP SI, size
+    INC SI   
+    CMP SI, H
     JNZ parte3
  
 ;Parte 4    
@@ -95,7 +96,7 @@ parte3:
     MOV AL, 0AH
     MOV CX, X
     MOV DX, Y
-    ADD DX, size
+    ADD DX, H
     DEC DX
 parte4:
     MOV AH, 0CH
@@ -103,7 +104,7 @@ parte4:
     
     INC CX
     INC SI
-    CMP SI, size
+    CMP SI, W
     JNZ parte4
     
         
