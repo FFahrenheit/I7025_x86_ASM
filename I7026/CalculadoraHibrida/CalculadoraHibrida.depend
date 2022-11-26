@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669441064 source:c:\users\ivan_\onedrive\escritorio\seminario traductores i\producto integrador\inciso b\calculadorahibrida\main.cpp
+1669442329 source:c:\users\ivan_\onedrive\escritorio\seminario traductores i\producto integrador\inciso b\calculadorahibrida\main.cpp
 	<iostream>
 	<string>
 	"utils.h"

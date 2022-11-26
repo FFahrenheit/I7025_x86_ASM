@@ -10,7 +10,7 @@ void print_menu();
 void print_option(string);
 void getch();
 void print_result(float);
-void graph(double (*)(double), int);
+void graph(double (*)(double), int, float);
 void title(string);
 
 struct InputTwo{
@@ -72,7 +72,7 @@ int main()
                 resultDouble = asm_sin(aux);
                 print_result(resultDouble);
                 getch();
-                graph(&asm_sin, 1);
+                graph(&asm_sin, 1, aux);
                 title("GRAFICA DE SENO");
                 break;
             case 8:
@@ -81,7 +81,7 @@ int main()
                 resultDouble = asm_cos(aux);
                 print_result(resultDouble);
                 getch();
-                graph(asm_cos, 1);
+                graph(asm_cos, 1, aux);
                 title("GRAFICA DE COSENO");
                 break;
             case 9:
@@ -90,7 +90,7 @@ int main()
                 resultDouble = asm_tan(aux);
                 print_result(resultDouble);
                 getch();
-                graph(asm_tan, 4);
+                graph(asm_tan, 4, aux);
                 title("GRAFICA DE TANGENTE");
                 break;
             case 10:
@@ -184,12 +184,12 @@ void title(string graph){
     cout << graph;
 }
 
-void graph(double (*func)(double), int img){
+void graph(double (*func)(double), int img, float expected){
     system("cls");
     draw_frame();
 
-    float last_x = 0;
-    float last_y = 0;
+    float accurate = 0;
+    int accurate_i = 0;
     int r0 = -360;
     int rf = 360;
     int y0 = 7;
@@ -221,32 +221,25 @@ void graph(double (*func)(double), int img){
 
     for(int i = x0; i <= xf; i++){
         x = map(i, x0, xf, r0, rf);
-        y = func(x);
-        if(y > img){
-            y = img;
-        }else if(y < img*-1){
-            y = img*-1;
+
+        if(abs(expected - x) < abs(expected - accurate) || i == x0){
+            accurate = x;
+            accurate_i = i;
         }
 
+        y = func(x);
+        y = (y > img) ? img : y < img*-1 ? img*-1 : y;
         j = round(map(y, -1*img, img, y0, yf));
+
         gotoxy(i, j);
         cout << "\333";
         continue;
-
-        if(last_x != x){
-            float slope = (last_y - y) / (last_x - x);
-            cout << slope;
-            if(slope >= 0.009){
-                cout << "\\";
-            }else if(slope <= -0.009){
-                cout << "/";
-            }else{
-                cout << "-";
-            }
-        }else{
-            cout << "-";
-        }
-        last_x = x;
-        last_y = y;
     }
+
+    y = func(accurate);
+    y = (y > img) ? img : (y < img*-1) ? img*-1 : y;
+    j = round(map(y, -1*img, img, y0, yf));
+    change_color(RED);
+    gotoxy(accurate_i, j);
+    cout << "\333";
 }
