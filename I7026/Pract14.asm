@@ -24,7 +24,6 @@ BEGIN PROC FAR                          ;-Inicializa y hace visible
     SUB     DX, DX                      ;-Fija cursor e
     CALL    Q20CURS                     ; posicion 0,0
 A10LOOP:                                ;                     
-    CALL    F20CLBF
     CALL    B10INPT                     ;-Peticion de recibir nombre
     TEST    ACTLEN, 0FFH                ;-Hay nombre? 
     JZ      A90                         ;  no, terminar
@@ -52,7 +51,8 @@ B10INPT ENDP                            ;
 D10SCAS PROC                            ;                            
     CLD                                 ;-DF = 0
     MOV     AL, '*'                     ;-Caracter a buscar
-    MOV     CX, 30                      ;-Buscar en 30 caracteres
+    MOV     CH, 00H
+    MOV     CL, ACTLEN                  ;-Buscar en 30 caracteres
     LEA     DI, NAMEFLD                 ;-Buscar en buffer
     REPNE   SCASB                       ;-Busca lo de AL en DX
     JE      D20                         ;-No encontro, salir
@@ -98,15 +98,6 @@ F10CLNM PROC                            ;
     REP     STOSW                       ;
     RET                                 ;
 F10CLNM ENDP                            ;
-;__________________________Limpiar buffer___________________________
-F20CLBF PROC                            ;
-    CLD                                 ;-Izquierda a derecha
-    MOV     AX, 2020H                   ;
-    MOV     CX, 15                      ;-Despejar 15 palabras
-    LEA     DI, NAMEFLD                 ;
-    REP     STOSW                       ;
-    RET                                 ;
-F20CLBF ENDP
 ;_________________________Recorre la pantalla_______________________
 Q10SCR PROC                             ;-AX se fija al inicio
     MOV     BH, 30                      ;-Atributo de color
