@@ -13,10 +13,6 @@ void print_result(float);
 void graph(double (*)(double), int, float);
 void title(string);
 
-struct InputTwo{
-    float a;
-    float b;
-};
 InputTwo require_two();
 double require_one();
 
@@ -26,6 +22,7 @@ int main()
     InputTwo input;
     float result, aux;
     double resultDouble;
+    draw_intro();
     do{
         print_menu();
         cin >> option;
@@ -100,8 +97,7 @@ int main()
                 print_result(result);
                 break;
             case 0:
-                change_color(GREEN);
-                print_center("GRACIAS POR USAR ESTA CALCULADORA", 2);
+                end_screen();
                 break;
             default:
                 change_color(RED);
@@ -113,42 +109,6 @@ int main()
 
 
     return 0;
-}
-
-InputTwo require_two(){
-    float a, b;
-    change_color(LIGHTGRAY);
-    print_center("Ingrese el primer numero:  ", 1);
-    change_color(GREEN);
-    cin >> a;
-    change_color(LIGHTGRAY);
-    print_center("Ingrese el segundo numero: ", 0);
-    change_color(GREEN);
-    cin >> b;
-    InputTwo result = { a, b};
-    return result;
-}
-
-double require_one(){
-    double a;
-    change_color(LIGHTGRAY);
-    print_center("Ingrese un numero:  ", 1);
-    change_color(GREEN);
-    cin >> a;
-    return a;
-}
-
-void print_option(string selected){
-    system("cls");
-    draw_frame();
-    change_color(LIGHTCYAN);
-    print_center(selected, 3);
-}
-
-void getch(){
-    change_color(BROWN);
-    gotoxy(44,28);
-    system("pause");
 }
 
 void print_menu(){
@@ -176,12 +136,6 @@ void print_menu(){
 
 float map(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-void title(string graph){
-    change_color(DARKGRAY);
-    gotoxy(2, 6);
-    cout << graph;
 }
 
 void graph(double (*func)(double), int img, float expected){

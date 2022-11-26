@@ -12,8 +12,7 @@ void asm_set_vars(float $a, float $b){
     op2 = $b;
 }
 
-float asm_sum(float $a, float $b)
-{
+float asm_sum(float $a, float $b){
     asm_set_vars($a, $b);
     asm volatile("movss op1, %xmm0");
     asm volatile("addss op2, %xmm0");

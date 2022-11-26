@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669442329 source:c:\users\ivan_\onedrive\escritorio\seminario traductores i\producto integrador\inciso b\calculadorahibrida\main.cpp
+1669443365 source:c:\users\ivan_\onedrive\escritorio\seminario traductores i\producto integrador\inciso b\calculadorahibrida\main.cpp
 	<iostream>
 	<string>
 	"utils.h"
@@ -11,5 +11,19 @@
 	<windows.h>
 
 1669437999 c:\users\ivan_\onedrive\escritorio\seminario traductores i\producto integrador\inciso b\calculadorahibrida\asm.h
+	<iostream>
+
+1669505167 source:c:\users\ivan_\projects\i7025_x86_asm\i7026\calculadorahibrida\main.cpp
+	<iostream>
+	<string>
+	"utils.h"
+	"asm.h"
+	<cmath>
+
+1669505471 c:\users\ivan_\projects\i7025_x86_asm\i7026\calculadorahibrida\utils.h
+	<iostream>
+	<windows.h>
+
+1669437999 c:\users\ivan_\projects\i7025_x86_asm\i7026\calculadorahibrida\asm.h
 	<iostream>
 

@@ -22,14 +22,19 @@ using namespace std;
 #define YELLOW			14
 #define WHITE			15
 
+
+struct InputTwo{
+    float a;
+    float b;
+};
+
 const int ROWS = 120;
 const int COLS = 30;
 
 int current_x = 0;
 int current_y = 0;
 
-void gotoxy(int x,int y)
-{
+void gotoxy(int x,int y){
     HANDLE hcon;
     hcon = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD dwPos;
@@ -40,21 +45,79 @@ void gotoxy(int x,int y)
     SetConsoleCursorPosition(hcon,dwPos);
  }
 
- void setup_console()
-{
+ void setup_console(){
     HWND console = GetConsoleWindow();
     RECT r;
     GetWindowRect(console, &r);
     MoveWindow(console, r.left, r.top, 1000,530, TRUE);
 }
 
-void change_color(int val)
-{
+void change_color(int val){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), val);
 }
 
-void draw_frame()
-{
+void print_position(string text, int x){
+    gotoxy(x, current_y + 1);
+    cout << text;
+}
+
+void print_result(float result){
+
+    string res = to_string(result);
+    res = res.substr(0, res.find(".") + 3);
+    int center = (120 - 11 - res.size())/2;
+    gotoxy(center, 14);
+    change_color(LIGHTGREEN);
+    cout << "Resultado: ";
+    change_color(CYAN);
+    for(size_t i = 0; i < res.size(); i++){
+        char current = res[i];
+        if(current == '.'){
+            change_color(RED);
+            cout << ".";
+            change_color(YELLOW);
+        }else{
+            cout << current;
+        }
+    }
+}
+
+void print_center(string text, int skips){
+    int x = (ROWS - (int)(text.length()))/2;
+    gotoxy(x, current_y + 1 + skips);
+    cout << text;
+}
+
+void title(string graph){
+    change_color(DARKGRAY);
+    gotoxy(2, 6);
+    cout << graph;
+}
+
+InputTwo require_two(){
+    float a, b;
+    change_color(LIGHTGRAY);
+    print_center("Ingrese el primer numero:  ", 1);
+    change_color(GREEN);
+    cin >> a;
+    change_color(LIGHTGRAY);
+    print_center("Ingrese el segundo numero: ", 0);
+    change_color(GREEN);
+    cin >> b;
+    InputTwo result = { a, b };
+    return result;
+}
+
+double require_one(){
+    double a;
+    change_color(LIGHTGRAY);
+    print_center("Ingrese un numero:  ", 1);
+    change_color(GREEN);
+    cin >> a;
+    return a;
+}
+
+void draw_borders(){
     change_color(DARKGRAY);
     gotoxy(0,0);cout << (char) 201;
     gotoxy(ROWS-1,0);cout << (char)187;
@@ -74,6 +137,11 @@ void draw_frame()
         gotoxy(ROWS-1,i);
         cout << (char) 186;
     }
+}
+
+void draw_frame()
+{
+    draw_borders();
     change_color(LIGHTGRAY);
     gotoxy(23, 1); cout << "   ___      _            _           _                         __   _  _   ";
     gotoxy(23, 2); cout << "  / __\\__ _| | ___ _   _| | __ _  __| | ___  _ __ __ _  __  __/ /_ | || |  ";
@@ -83,35 +151,113 @@ void draw_frame()
     change_color(WHITE);
 }
 
-void print_center(string text, int skips){
-    int x = (ROWS - (int)(text.length()))/2;
-    gotoxy(x, current_y + 1 + skips);
-    cout << text;
+void print_option(string selected){
+    system("cls");
+    draw_frame();
+    change_color(LIGHTCYAN);
+    print_center(selected, 3);
 }
 
-void print_position(string text, int x){
-    gotoxy(x, current_y + 1);
-    cout << text;
+void getch(){
+    change_color(BROWN);
+    gotoxy(44,28);
+    system("pause");
 }
 
-void print_result(float result){
+void counter(){
+    system("cls");
+    gotoxy(0,5);
+    cout <<"\t\t\t\t\t\t 333333333333333\n";
+    cout << "\t\t\t\t\t\t3:::::::::::::::33 \n";
+    cout << "\t\t\t\t\t\t3::::::33333::::::3\n";
+    cout << "\t\t\t\t\t\t3333333     3:::::3\n";
+    cout << "\t\t\t\t\t\t            3:::::3\n";
+    cout << "\t\t\t\t\t\t            3:::::3\n";
+    cout << "\t\t\t\t\t\t    33333333:::::3 \n";
+    cout << "\t\t\t\t\t\t    3:::::::::::3  \n";
+    cout << "\t\t\t\t\t\t    33333333:::::3 \n";
+    cout << "\t\t\t\t\t\t            3:::::3\n";
+    cout << "\t\t\t\t\t\t            3:::::3\n";
+    cout << "\t\t\t\t\t\t            3:::::3\n";
+    cout << "\t\t\t\t\t\t3333333     3:::::3\n";
+    cout << "\t\t\t\t\t\t3::::::33333::::::3\n";
+    cout << "\t\t\t\t\t\t3:::::::::::::::33 \n";
+    cout << "\t\t\t\t\t\t 333333333333333   \n";
+    Sleep(1000);
+    gotoxy(0,5);
+    cout<<"\t\t\t\t\t\t 222222222222222  \n";
+    cout<<"\t\t\t\t\t\t2:::::::::::::::22  \n";
+    cout<<"\t\t\t\t\t\t2::::::222222:::::2 \n";
+    cout<<"\t\t\t\t\t\t2222222     2:::::2 \n";
+    cout<<"\t\t\t\t\t\t            2:::::2 \n";
+    cout<<"\t\t\t\t\t\t            2:::::2 \n";
+    cout<<"\t\t\t\t\t\t         2222::::2  \n";
+    cout<<"\t\t\t\t\t\t    22222::::::22   \n";
+    cout<<"\t\t\t\t\t\t  22::::::::222     \n";
+    cout<<"\t\t\t\t\t\t 2:::::22222        \n";
+    cout<<"\t\t\t\t\t\t2:::::2             \n";
+    cout<<"\t\t\t\t\t\t2:::::2             \n";
+    cout<<"\t\t\t\t\t\t2:::::2       222222\n";
+    cout<<"\t\t\t\t\t\t2::::::2222222:::::2\n";
+    cout<<"\t\t\t\t\t\t2::::::::::::::::::2\n";
+    cout<<"\t\t\t\t\t\t22222222222222222222\n";
+    Sleep(1000);
+    gotoxy(0,5);
+    cout<<"\t\t\t\t\t\t  1111111            \n";
+    cout<<"\t\t\t\t\t\t 1::::::1               \n";
+    cout<<"\t\t\t\t\t\t1:::::::1               \n";
+    cout<<"\t\t\t\t\t\t111:::::1               \n";
+    cout<<"\t\t\t\t\t\t   1::::1               \n";
+    cout<<"\t\t\t\t\t\t   1::::1               \n";
+    cout<<"\t\t\t\t\t\t   1::::1               \n";
+    cout<<"\t\t\t\t\t\t   1::::l               \n";
+    cout<<"\t\t\t\t\t\t   1::::l               \n";
+    cout<<"\t\t\t\t\t\t   1::::l               \n";
+    cout<<"\t\t\t\t\t\t   1::::l               \n";
+    cout<<"\t\t\t\t\t\t   1::::l               \n";
+    cout<<"\t\t\t\t\t\t111::::::111            \n";
+    cout<<"\t\t\t\t\t\t1::::::::::1            \n";
+    cout<<"\t\t\t\t\t\t1::::::::::1            \n";
+    cout<<"\t\t\t\t\t\t111111111111            \n";
+    Sleep(1000);
+}
 
-    string res = to_string(result);
-    int center = (120 - 11 - res.size())/2;
-    gotoxy(center, 14);
-    change_color(LIGHTGREEN);
-    cout << "Resultado: ";
-    change_color(CYAN);
-    for(size_t i = 0; i < res.size(); i++){
-        char current = res[i];
-        if(current == '.'){
-            change_color(RED);
-            cout << ".";
-            change_color(YELLOW);
-        }else{
-            cout << current;
-        }
-    }
+void draw_intro(){
+    counter();
+    system("cls");
+    draw_frame();
+    change_color(GREEN);
+    print_center("  ___           ___                   _   ___                 _                       __  __          _ _ _     ", 5);
+    print_center(" | _ \\___ _ _  |_ _|____ __  __ _ ___| | |_ _|_ ____ _ _ _   | |   ___ _ __  ___ ___ |  \\/  |_  _ _ _(_) | |___ ",0);
+    print_center(" |  _/ _ \\ '_|  | |(_-< '  \\/ _` / -_) |  | |\\ V / _` | ' \\  | |__/ _ \\ '_ \\/ -_)_ / | |\\/| | || | '_| | | / _ \\",0);
+    print_center(" |_| \\___/_|   |___/__/_|_|_\\__,_\\___|_| |___|\\_/\\__,_|_||_| |____\\___/ .__/\\___/__| |_|  |_|\\_,_|_| |_|_|_\\___/",0);
+    getch();
+}
+
+void end_screen(){
+    system("cls");
+    draw_borders();
+    gotoxy(0,10);
+    cout<<"\t\t\t           .--.    _..._    \n";
+    cout<<"\t\t\t     _.._  |__|  .'     '.  \n";
+    cout<<"\t\t\t   .' .._| .--. .   .-.   . \n";
+    cout<<"\t\t\t   | '     |  | |  '   '  | \n";
+    cout<<"\t\t\t __| |__   |  | |  |   |  | \n";
+    cout<<"\t\t\t|__   __|  |  | |  |   |  | \n";
+    cout<<"\t\t\t   | |     |  | |  |   |  | \n";
+    cout<<"\t\t\t   | |     |__| |  |   |  | \n";
+    cout<<"\t\t\t   | |          |  |   |  | \n";
+    cout<<"\t\t\t   | |          |  |   |  | \n";
+    cout<<"\t\t\t   |_|          '--'   '--' \n";
+
+    cout << "\n\n\t| _,_    _ |  |    ,_  |      _ _   |\\/|    .||  \n";
+    cout << "\t|_\\|||(|(/_|  |\\/(|||  |_()|)(/_/_  |  |L||`|||()\n";
+    cout << "\t                           |                    \n";
+
+    gotoxy(0,4);
+    change_color(GREEN);
+
+    print_center("GRACIAS POR USAR ESTA CALCULADORA", 2);
 }
 
 #endif // UTILS_H_INCLUDED
