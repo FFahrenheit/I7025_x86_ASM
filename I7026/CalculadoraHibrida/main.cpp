@@ -2,6 +2,7 @@
 #include <string>
 #include "utils.h"
 #include "asm.h"
+#include <cmath>
 
 using namespace std;
 
@@ -9,6 +10,8 @@ void print_menu();
 void print_option(string);
 void getch();
 void print_result(float);
+void graph(double (*)(double), int);
+void title(string);
 
 struct InputTwo{
     float a;
@@ -68,18 +71,27 @@ int main()
                 aux = require_one();
                 resultDouble = asm_sin(aux);
                 print_result(resultDouble);
+                getch();
+                graph(&asm_sin, 1);
+                title("GRAFICA DE SENO");
                 break;
             case 8:
                 print_option("COSENO");
                 aux = require_one();
                 resultDouble = asm_cos(aux);
                 print_result(resultDouble);
+                getch();
+                graph(asm_cos, 1);
+                title("GRAFICA DE COSENO");
                 break;
             case 9:
                 print_option("TANGENTE");
                 aux = require_one();
                 resultDouble = asm_tan(aux);
                 print_result(resultDouble);
+                getch();
+                graph(asm_tan, 4);
+                title("GRAFICA DE TANGENTE");
                 break;
             case 10:
                 print_option("GRADOS A RADIANES");
@@ -160,4 +172,81 @@ void print_menu(){
     change_color(LIGHTGRAY);
     print_center("Su eleccion: ", 0);
     change_color(GREEN);
+}
+
+float map(float x, float in_min, float in_max, float out_min, float out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+void title(string graph){
+    change_color(DARKGRAY);
+    gotoxy(2, 6);
+    cout << graph;
+}
+
+void graph(double (*func)(double), int img){
+    system("cls");
+    draw_frame();
+
+    float last_x = 0;
+    float last_y = 0;
+    int r0 = -360;
+    int rf = 360;
+    int y0 = 7;
+    int yf = 26;
+    int x0 = 5;
+    int xf = 115;
+    int j;
+    float x, y;
+
+    change_color(LIGHTGRAY);
+    gotoxy(1, (y0+yf)/2);
+    cout << r0;
+    gotoxy(116, (y0+yf)/2);
+    cout << rf;
+    gotoxy(60, 6);
+    cout << img;
+    gotoxy(60, 27);
+    cout << "-" << img;
+    change_color(DARKGRAY);
+    gotoxy(6,(y0+yf)/2);
+    for(int i = 6; i < 116; i++){
+        cout << "_";
+    }
+    for(int i = 7; i < 27; i++){
+        gotoxy(60, i);
+        cout << "|";
+    }
+    change_color(WHITE);
+
+    for(int i = x0; i <= xf; i++){
+        x = map(i, x0, xf, r0, rf);
+        y = func(x);
+        if(y > img){
+            y = img;
+        }else if(y < img*-1){
+            y = img*-1;
+        }
+
+        j = round(map(y, -1*img, img, y0, yf));
+        gotoxy(i, j);
+        cout << "\333";
+        continue;
+
+        if(last_x != x){
+            float slope = (last_y - y) / (last_x - x);
+            cout << slope;
+            if(slope >= 0.009){
+                cout << "\\";
+            }else if(slope <= -0.009){
+                cout << "/";
+            }else{
+                cout << "-";
+            }
+        }else{
+            cout << "-";
+        }
+        last_x = x;
+        last_y = y;
+    }
 }
