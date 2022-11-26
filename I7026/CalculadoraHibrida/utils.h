@@ -102,7 +102,7 @@ void print_result(float result){
     change_color(LIGHTGREEN);
     cout << "Resultado: ";
     change_color(CYAN);
-    for(int i = 0; i < res.size(); i++){
+    for(size_t i = 0; i < res.size(); i++){
         char current = res[i];
         if(current == '.'){
             change_color(RED);

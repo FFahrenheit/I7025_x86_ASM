@@ -5,6 +5,7 @@
 using namespace std;
 
 float op1, op2, aux, i, inc, res;
+double d;
 
 void asm_set_vars(float $a, float $b){
     op1 = $a;
@@ -77,13 +78,30 @@ float asm_pow(int $a, int $b){
     return res;
 }
 
-float asm_deg_rad(float $rad){
-    float temp = asm_mul($rad, 3.141592);
+double asm_deg_rad(double $rad){
+    double temp = asm_mul($rad, 3.141592);
     temp = asm_div(temp, 180);
     return temp;
 }
 
-float asm_sin(int $a){
+double asm_sin(double $a){
+    d = asm_deg_rad($a);
+    asm("fldl %0;"
+        "fsin;"
+        "fstpl %0":"+m"(d));
+    return d;
+}
+
+double asm_cos(double $a){
+    d = asm_deg_rad($a);
+    asm("fldl %0;"
+        "fcos;"
+        "fstpl %0":"+m"(d));
+    return d;
+}
+
+double asm_tan(double $a){
+    return asm_div(asm_sin($a), asm_cos($a));
 }
 
 #endif // ASM_H_INCLUDED

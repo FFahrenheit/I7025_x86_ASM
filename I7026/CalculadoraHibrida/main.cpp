@@ -15,13 +15,14 @@ struct InputTwo{
     float b;
 };
 InputTwo require_two();
-float require_one();
+double require_one();
 
 int main()
 {
     int option;
     InputTwo input;
     float result, aux;
+    double resultDouble;
     do{
         print_menu();
         cin >> option;
@@ -65,12 +66,34 @@ int main()
             case 7:
                 print_option("SENO");
                 aux = require_one();
-
+                resultDouble = asm_sin(aux);
+                print_result(resultDouble);
+                break;
+            case 8:
+                print_option("COSENO");
+                aux = require_one();
+                resultDouble = asm_cos(aux);
+                print_result(resultDouble);
+                break;
+            case 9:
+                print_option("TANGENTE");
+                aux = require_one();
+                resultDouble = asm_tan(aux);
+                print_result(resultDouble);
+                break;
             case 10:
                 print_option("GRADOS A RADIANES");
                 aux = require_one();
                 result = asm_deg_rad(aux);
                 print_result(result);
+                break;
+            case 0:
+                change_color(GREEN);
+                print_center("GRACIAS POR USAR ESTA CALCULADORA", 2);
+                break;
+            default:
+                change_color(RED);
+                print_center("OPCION INVALIDA", 2);
                 break;
         }
         getch();
@@ -94,9 +117,8 @@ InputTwo require_two(){
     return result;
 }
 
-float require_one(){
-
-    float a;
+double require_one(){
+    double a;
     change_color(LIGHTGRAY);
     print_center("Ingrese un numero:  ", 1);
     change_color(GREEN);
@@ -112,6 +134,7 @@ void print_option(string selected){
 }
 
 void getch(){
+    change_color(BROWN);
     gotoxy(44,28);
     system("pause");
 }
