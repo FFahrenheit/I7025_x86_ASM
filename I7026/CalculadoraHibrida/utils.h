@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//Definicion de colores para cambiar
 #define BLACK			0
 #define BLUE			1
 #define GREEN			2
@@ -34,6 +35,7 @@ const int COLS = 30;
 int current_x = 0;
 int current_y = 0;
 
+//Funcion para colocar el cursor en X, Y usando API de Windows
 void gotoxy(int x,int y){
     HANDLE hcon;
     hcon = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -45,6 +47,7 @@ void gotoxy(int x,int y){
     SetConsoleCursorPosition(hcon,dwPos);
  }
 
+ //Centramos consola
  void setup_console(){
     HWND console = GetConsoleWindow();
     RECT r;
@@ -52,29 +55,31 @@ void gotoxy(int x,int y){
     MoveWindow(console, r.left, r.top, 1000,530, TRUE);
 }
 
+//Cambiamos de color de texto usando la API de Windows
 void change_color(int val){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), val);
 }
 
+//Imprimimos en las coordenadas guardadas
 void print_position(string text, int x){
     gotoxy(x, current_y + 1);
     cout << text;
 }
 
+//Imprimimos resultado con el formato solicitado
 void print_result(float result){
-
     string res = to_string(result);
-    res = res.substr(0, res.find(".") + 3);
-    int center = (120 - 11 - res.size())/2;
+    res = res.substr(0, res.find(".") + 3); //Cortamos el reultado a dos decimales
+    int center = (120 - 11 - res.size())/2; //Encontramos el centro
     gotoxy(center, 14);
     change_color(LIGHTGREEN);
     cout << "Resultado: ";
-    change_color(CYAN);
-    for(size_t i = 0; i < res.size(); i++){
+    change_color(CYAN);                     //Color parte entera
+    for(size_t i = 0; i < res.size(); i++){//Imprimimos caracter por caracter
         char current = res[i];
         if(current == '.'){
-            change_color(RED);
-            cout << ".";
+            change_color(RED);          //Cambiamos color cuando encuentra el punto
+            cout << ".";                //imprime y cambia de nuevo
             change_color(YELLOW);
         }else{
             cout << current;
@@ -82,18 +87,21 @@ void print_result(float result){
     }
 }
 
+//Imprimimos en el centro
 void print_center(string text, int skips){
-    int x = (ROWS - (int)(text.length()))/2;
+    int x = (ROWS - (int)(text.length()))/2;    //Calculamos centro
     gotoxy(x, current_y + 1 + skips);
     cout << text;
 }
 
+//Imprimir titulo de grafico
 void title(string graph){
     change_color(DARKGRAY);
     gotoxy(2, 6);
     cout << graph;
 }
 
+//Con C++ solicita dos numeros y los retorna en una struct
 InputTwo require_two(){
     float a, b;
     change_color(LIGHTGRAY);
@@ -108,6 +116,7 @@ InputTwo require_two(){
     return result;
 }
 
+//Solicita un numero y lo retorna
 double require_one(){
     double a;
     change_color(LIGHTGRAY);
@@ -117,6 +126,7 @@ double require_one(){
     return a;
 }
 
+//Rutina para imprimir marco
 void draw_borders(){
     change_color(DARKGRAY);
     gotoxy(0,0);cout << (char) 201;
@@ -139,6 +149,7 @@ void draw_borders(){
     }
 }
 
+//Rutina para imprimir titulo del proyecto
 void draw_frame()
 {
     draw_borders();
@@ -151,6 +162,7 @@ void draw_frame()
     change_color(WHITE);
 }
 
+//Imprime la opcion seleccionada
 void print_option(string selected){
     system("cls");
     draw_frame();
@@ -158,12 +170,14 @@ void print_option(string selected){
     print_center(selected, 3);
 }
 
+//Espera una respuesta
 void getch(){
     change_color(BROWN);
     gotoxy(44,28);
     system("pause");
 }
 
+//Rutina para imprimir un contador...
 void counter(){
     system("cls");
     gotoxy(0,5);
@@ -222,6 +236,7 @@ void counter(){
     Sleep(1000);
 }
 
+//Rutina para imprimir intro del proyecto
 void draw_intro(){
     counter();
     system("cls");
@@ -234,6 +249,7 @@ void draw_intro(){
     getch();
 }
 
+//Rutina para imprimir fin del proyecto
 void end_screen(){
     system("cls");
     draw_borders();
